@@ -1,0 +1,2 @@
+npm run build : webpack çalıştırır ve bundle.js oluşturur.
+npm run dev : input.css e bişey eklediysen onları style.css e alır
