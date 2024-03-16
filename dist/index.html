@@ -287,9 +287,11 @@
                     <a href="#" class="text-blue-500 font-medium text-sm hover:text-blue-600">View details</a>
                 </div>
             </div>
+                <!-- default table
                 <div class="bg-white border border-gray-100 shadow-md shadow-black/5 p-6 rounded-md">
                     <div class="flex justify-between mb-4 items-start">
                         <div class="font-medium">Blog Yönetimi</div>
+                        <a href="#" id="addNewBlog" class="bg-green-500 text-white px-4 py-1 font-medium rounded">+ Ekle</a>
                     </div>
                     <form action="" class="flex items-center mb-4">
                         <div class="relative w-full mr-2">
@@ -329,6 +331,24 @@
                         </table>
                     </div>
                 </div>   
+            -->
+                <!-- blogs table -->
+                <div class="bg-white border border-gray-100 shadow-md shadow-black/5 p-6 rounded-md mt-5">
+                    <div class="flex justify-between mb-4 items-start">
+                        <div class="font-medium">Blog Yönetimi</div>
+                        <a href="#" id="addNewBlog" class="bg-green-500 text-white px-4 py-1 font-medium rounded">+ Ekle</a>
+                    </div>
+                    <form action="" class="flex items-center mb-4">
+                        <div class="relative w-full mr-2">
+                            <input type="text" class="py-2 pr-4 pl-10 bg-gray-50 w-full outline-none border border-gray-100 rounded-md text-sm focus:border-blue-500" placeholder="Ara...">
+                            <i class="ri-search-line absolute top-1/2 left-4 -translate-y-1/2 text-gray-400"></i>
+                        </div>
+                    </form>
+                    <div id="table-container" class="overflow-x-auto">
+                       
+                    </div>
+                </div>   
+                
             </div>
          
         </div>
@@ -338,7 +358,5 @@
     <script src="https://unpkg.com/@popperjs/core@2"></script>
     <script src="js/script.js"></script>
     <script src="bundle.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/flowbite/2.3.0/datepicker.min.js"></script>
-
 </body>
 </html>

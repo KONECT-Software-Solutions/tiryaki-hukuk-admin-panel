@@ -2,7 +2,7 @@
 import { initializeApp } from "firebase/app";
 import { getAnalytics } from "firebase/analytics";
 import { getAuth, signInWithEmailAndPassword } from "firebase/auth";
-import { getFirestore, collection, getDocs } from "firebase/firestore";
+import { getFirestore, collection, getDocs, addDoc } from "firebase/firestore";
 
 // Your web app's Firebase configuration
 const firebaseConfig = {
@@ -21,33 +21,169 @@ const analytics = getAnalytics(app);
 const auth = getAuth(app);
 const db = getFirestore(app);
 
-// Get collection from firestore
-const getCollection = async (db, collectionName) => {
-  const querySnapshot = await getDocs(collection(db, collectionName)).then((res) => {
-    console.log('Collection:', res);
-  })
-  querySnapshot?.forEach((doc) => {
-    console.log(`${doc.id} => ${doc.data()}`);
-  });
-};
-getCollection(db, 'blogs')
 
+// Collection Reference
+const blogRef = collection(db, "blogs");
 
-// Function to get all blogs
-async function getAllBlogs() {
-  const blogsCollectionRef = collection(db, "blogs");
-  const snapshot = await getDocs(blogsCollectionRef);
-  const blogsList = snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
-  return blogsList;
+// Function to format the timestamp
+function formatDate(timestamp) {
+  const date = new Date(timestamp.seconds * 1000);
+  return date.toLocaleDateString("en-US");
 }
 
-// Usage
-getAllBlogs().then(blogs => {
-  console.log(blogs);
+// Function to create a table from the blog data with pagination
+function createTable(data, itemsPerPage = 10) {
+  const table = document.createElement('table');
+  table.innerHTML = `
+    <thead>
+      <tr>
+        <th class="text-[12px] uppercase tracking-wide font-medium text-gray-400 py-2 px-4 bg-gray-50 text-left rounded-tl-md rounded-bl-md">Blog Başlığı</th>
+        <th class="text-[12px] uppercase tracking-wide font-medium text-gray-400 py-2 px-4 bg-gray-50 text-left">Yazar</th>
+        <th class="text-[12px] uppercase tracking-wide font-medium text-gray-400 py-2 px-4 bg-gray-50 text-left">Yaratılma Tarihi</th>
+        <th class="text-[12px] uppercase tracking-wide font-medium text-gray-400 py-2 px-4 bg-gray-50 text-left">Aksiyonlar</th>
+      </tr>
+    </thead>
+  `;
+
+  // Calculate the number of pages needed
+  const totalPages = Math.ceil(data.length / itemsPerPage);
+  let currentPage = 1;
+
+  // Function to render the current page
+  function renderPage(page) {
+    const start = (page - 1) * itemsPerPage;
+    const end = start + itemsPerPage;
+    const pageData = data.slice(start, end);
+
+    // Clear the current table body
+    const tbody = table.querySelector('tbody');
+    if (tbody) {
+      tbody.remove();
+    }
+
+    // Create a new tbody element and populate it with the current page's data
+    const newTbody = document.createElement('tbody');
+    pageData.forEach(item => {
+      const row = document.createElement('tr');
+      row.innerHTML = `
+        <td class="py-2 px-4 border-b border-b-gray-50">
+          <div class="flex items-center">
+              <img src="https://placehold.co/32x32" alt="" class="w-8 h-8 rounded object-cover block">
+              <a href="#" class="text-gray-600 text-sm font-medium hover:text-blue-500 ml-2 truncate">${item.title || ''}</a>
+          </div>
+        </td>
+        <td class="py-2 px-4 border-b border-b-gray-50">
+          <span class="text-[13px] font-medium text-gray-400">${item.author || ''}</span>
+        </td>
+        <td class="py-2 px-4 border-b border-b-gray-50">
+          <span class="text-[13px] font-medium text-gray-400">$${formatDate(item.created_date)}</span>
+        </td>
+        <td class="py-2 px-4 border-b border-b-gray-50">
+          <div class="flex space-x-5">
+              <button class="text-blue-500 hover:text-blue-600 ">Değiştir</button>
+              <button class="text-red-500 hover:text-red-600">Sil</button>
+              <button class="text-green-500 hover:text-green-600">Görüntüle</button>
+          </div>
+        </td>
+      `;
+      newTbody.appendChild(row);
+    });
+    table.appendChild(newTbody);
+  }
+
+  // Render the first page initially
+  renderPage(currentPage);
+
+  // Create pagination buttons
+  const paginationContainer = document.createElement('div');
+  paginationContainer.className = 'flex justify-end mt-4 w-full pagination-container'; // Ensure full width
+
+  for (let i = 1; i <= totalPages; i++) {
+    const button = document.createElement('button');
+    button.textContent = i;
+    button.className = 'pagination-button h-8 px-4 m-2 text-sm text-indigo-100 transition-colors duration-150 bg-indigo-500 rounded-lg focus:shadow-outline hover:bg-indigo-800'; // Add padding and styles
+    button.onclick = () => {
+      currentPage = i;
+      renderPage(currentPage);
+    };
+    paginationContainer.appendChild(button);
+  }
+
+  return { table, paginationContainer };
+
+
+}
+
+// Get Blog Collection Documents Data
+getDocs(blogRef).then(querySnapshot => {
+  let i = 0;
+  let blogData = [];
+  querySnapshot.docs.forEach(doc => {
+    blogData.push(doc.data());
+    // console.log(`Blog Data ${i}:`, doc.data());
+    i++; 
+    
+    // Reference to the 'comments' subcollection of the current blog document
+    const commentsRef = collection(db, "blogs", doc.id, "comments");
+
+    let commentData = [];
+    // Get all comments from the 'comments' subcollection
+    getDocs(commentsRef).then(commentsSnapshot => {
+      commentsSnapshot.docs.forEach(commentDoc => {
+        commentData.push(commentDoc.data());
+        //console.log('Comment Data:', commentDoc.data());
+      });
+    }).catch(error => {
+      console.error("Error getting comments:", error);
+    });
+  });
+  console.log('Blog Data:', blogData.length, blogData);
+  // Append the table to your table container div
+  const { table, paginationContainer } = createTable(blogData);
+  const tableContainer = document.getElementById('table-container');
+  tableContainer.appendChild(table);
+  tableContainer.appendChild(paginationContainer);}).catch(error => {
+  console.error("Error getting blogs:", error);
 });
 
 
-// signin button
+
+// Collection Reference
+// Add new blog document with a subcollection function
+const blogData = {
+  title: "11111",
+  image: "image link here",
+  content: "This is a new blog post content.",
+  author: "John Doe",
+  created_date: new Date(),
+  updated_date: new Date(),
+};
+
+
+const addNewBlog = async (blogData) => {
+  try {
+    addDoc(blogRef, blogData);
+    
+    console.log("Blog post added.");
+
+  } catch (error) {
+    console.error("Error adding document:", error);
+  }
+};
+
+// Add new blog post button start
+
+const addNewBlogElement = document.getElementById('addNewBlog');
+
+if (addNewBlogElement) {
+  addNewBlogElement.addEventListener('click', () => {
+    addNewBlog(blogData);
+  }); 
+};
+
+// Add new blog post button end
+
+// signin button start
 const signin = document.getElementById('signin');
 
 // if signin button clicked
@@ -79,5 +215,7 @@ if (signin) {
       });
   });
 }
+
+// signin button end
 
 
