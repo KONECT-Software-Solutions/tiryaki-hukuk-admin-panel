@@ -154,7 +154,7 @@ const blogData = {
   title: "11111",
   image: "image link here",
   content: "This is a new blog post content.",
-  author: "John Doe",
+  author: "ebrar karademir",
   created_date: new Date(),
   updated_date: new Date(),
 };
