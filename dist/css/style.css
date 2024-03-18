@@ -816,6 +816,18 @@ video {
   width: 1.25rem;
 }
 
+.w-48{
+  width: 12rem;
+}
+
+.w-56{
+  width: 14rem;
+}
+
+.w-52{
+  width: 13rem;
+}
+
 .min-w-\[540px\]{
   min-width: 540px;
 }
@@ -1560,6 +1572,22 @@ video {
     margin-top: 0px;
   }
 
+  .md\:ml-10{
+    margin-left: 2.5rem;
+  }
+
+  .md\:ml-48{
+    margin-left: 12rem;
+  }
+
+  .md\:ml-56{
+    margin-left: 14rem;
+  }
+
+  .md\:ml-52{
+    margin-left: 13rem;
+  }
+
   .md\:hidden{
     display: none;
   }
@@ -1570,6 +1598,26 @@ video {
 
   .md\:w-\[calc\(100\%-256px\)\]{
     width: calc(100% - 256px);
+  }
+
+  .md\:w-\[calc\(100\%-200px\)\]{
+    width: calc(100% - 200px);
+  }
+
+  .md\:w-\[calc\(100\%-240px\)\]{
+    width: calc(100% - 240px);
+  }
+
+  .md\:w-\[calc\(100\%-230px\)\]{
+    width: calc(100% - 230px);
+  }
+
+  .md\:w-\[calc\(100\%-210px\)\]{
+    width: calc(100% - 210px);
+  }
+
+  .md\:w-\[calc\(100\%-220px\)\]{
+    width: calc(100% - 220px);
   }
 
   .md\:grid-cols-2{
