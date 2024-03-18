@@ -332,9 +332,22 @@
     </main>
     <!-- end: Main -->
 
+    <div id="deleteModal" class=" font-medium hidden text-sm fixed inset-0 bg-black bg-opacity-50 z-50 flex justify-center items-center">
+    <div class="bg-white rounded-lg p-4 max-w-sm w-full">
+        <div class="mb-4">
+        <p class="text-gray-800 text-lg">Bu blog yazısını silmek istediğinize emin misiniz?</p>
+        </div>
+        <div class="flex justify-end">
+        <button id="cancelDelete" class="bg-gray-300 text-gray-800 rounded px-4 py-2 mr-2">Hayır</button>
+        <button id="confirmDelete" class="bg-red-600 text-white rounded px-4 py-2">Evet</button>
+        </div>
+    </div>
+    </div>
+
+
     <script src="https://unpkg.com/@popperjs/core@2"></script>
-    <script src="js/script.js"></script>
     <script src="bundle.js"></script>
+    <script src="js/script.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/flowbite/2.3.0/flowbite.min.js"></script>
 
 </body>

@@ -11,9 +11,9 @@ const analytics = getAnalytics(app);
 const auth = getAuth(app);
 const db = getFirestore(app);
 
-
 // Collection Reference
 const blogRef = collection(db, "blogs");
+
 
 // Function to format the timestamp
 function formatDate(timestamp) {
@@ -29,7 +29,7 @@ function createTable(data, itemsPerPage = 10) {
   table.innerHTML = `
     <thead>
       <tr>
-        <th class="w-1/4 text-[12px] uppercase tracking-wide font-medium text-gray-600 py-2 px-4 bg-gray-50 text-left rounded-tl-md rounded-bl-md">Blog Başlığı</th>
+        <th class="w-1/4 text-[12px] uppercase tracking-wide font-medium text-gray-600 py-2 px-4 bg-gray-50 text-left rounded-tl-md rounded-bl-md">Başlık</th>
         <th class="w-1/4 text-[12px] uppercase tracking-wide font-medium text-gray-600 py-2 px-4 bg-gray-50 text-left">Yazar</th>
         <th class="w-1/4 text-[12px] uppercase tracking-wide font-medium text-gray-600 py-2 px-4 bg-gray-50 text-left">Yaratılma Tarihi</th>
         <th class="w-1/4 text-[12px] uppercase tracking-wide font-medium text-gray-600 py-2 px-4 bg-gray-50 text-left">Column</th>
@@ -49,6 +49,8 @@ function createTable(data, itemsPerPage = 10) {
     const start = (page - 1) * itemsPerPage;
     const end = start + itemsPerPage;
     const pageData = data.slice(start, end);
+    console.log('Data:', data);
+
 
     // Clear the current table body
     const tbody = table.querySelector('tbody');
@@ -91,9 +93,10 @@ function createTable(data, itemsPerPage = 10) {
       <button class="text-sm bg-gray-700 hover:bg-gray-900 text-white font-bold py-2 px-4 rounded">
         Görüntüle
       </button>
-      <button class="text-sm bg-gray-700 hover:bg-gray-900 text-white font-bold py-2 px-4 rounded">
-        Sil
+      <button class="text-sm bg-gray-700 hover:bg-gray-900 text-white font-bold py-2 px-4 rounded" onclick="showDeleteModal('${item.id}')">
+      Sil
       </button>
+    
     </div>
     
   </td> 
@@ -134,8 +137,9 @@ getDocs(blogRef).then(querySnapshot => {
   let i = 0;
   let blogData = [];
   querySnapshot.docs.forEach(doc => {
-    blogData.push(doc.data());
-    // console.log(`Blog Data ${i}:`, doc.data());
+    let docData = doc.data();
+    docData.id = doc.id; // Add the document ID as a property
+    blogData.push(docData);
     i++; 
     
     // Reference to the 'comments' subcollection of the current blog document
@@ -152,7 +156,6 @@ getDocs(blogRef).then(querySnapshot => {
       console.error("Error getting comments:", error);
     });
   });
-  console.log('Blog Data:', blogData.length, blogData);
   // Append the table to your table container div
   const { table, paginationContainer } = createTable(blogData);
   const tableContainer = document.getElementById('table-container');
@@ -165,7 +168,7 @@ getDocs(blogRef).then(querySnapshot => {
 
 // Collection Reference
 // Add new blog document with a subcollection function
-const blogData = {
+const blogDataAdd = {
   title: "11111",
   image: "image link here",
   content: "This is a new blog post content.",
@@ -175,9 +178,9 @@ const blogData = {
 };
 
 
-const addNewBlog = async (blogData) => {
+const addNewBlog = async (blogDataAdd) => {
   try {
-    addDoc(blogRef, blogData);
+    addDoc(blogRef, blogDataAdd);
     
     console.log("Blog post added.");
 
@@ -192,7 +195,7 @@ const addNewBlogElement = document.getElementById('addNewBlog');
 
 if (addNewBlogElement) {
   addNewBlogElement.addEventListener('click', () => {
-    addNewBlog(blogData);
+    addNewBlog(blogDataAdd);
   }); 
 };
 
