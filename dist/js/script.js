@@ -140,3 +140,27 @@ document.querySelectorAll('[data-tab]').forEach(function (item) {
 
 
 // end new blog post
+
+// delete blog post start
+function deleteBlogPost(blogId) {
+    // Your code to delete the blog post from the database
+    console.log(`Deleting blog post with ID: ${blogId}`);
+
+    // Hide the modal after deletion
+    hideDeleteModal();
+  }
+
+  
+function showDeleteModal(blogId) {
+    document.getElementById('deleteModal').classList.remove('hidden');
+    document.getElementById('confirmDelete').addEventListener('click', deleteBlogPost, blogId);
+    document.getElementById('cancelDelete').addEventListener('click', hideDeleteModal);
+  }
+  
+function hideDeleteModal() {
+    console.log('Hiding delete modal');
+    document.getElementById('deleteModal').classList.add('hidden');
+  }
+  
+
+  // delete blog post end
