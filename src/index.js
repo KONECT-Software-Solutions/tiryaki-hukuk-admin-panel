@@ -2,7 +2,7 @@
 import { initializeApp } from "firebase/app";
 import { getAnalytics } from "firebase/analytics";
 import { getAuth, signInWithEmailAndPassword } from "firebase/auth";
-import { getFirestore, collection, getDocs, addDoc } from "firebase/firestore";
+import { getFirestore, collection, getDocs, addDoc, deleteDoc, doc} from "firebase/firestore";
 import { firebaseConfig } from "/src/config/FirebaseConfig.js";
 
 // Initialize Firebase
@@ -10,6 +10,7 @@ const app = initializeApp(firebaseConfig);
 const analytics = getAnalytics(app);
 const auth = getAuth(app);
 const db = getFirestore(app);
+let blogData = [];
 
 // Collection Reference
 const blogRef = collection(db, "blogs");
@@ -22,7 +23,7 @@ function formatDate(timestamp) {
 }
 
 // Function to create a table from the blog data with pagination
-function createTable(data, itemsPerPage = 10) {
+function createTable(itemsPerPage = 10) {
   const table = document.createElement('table');
   table.className = 'w-full bg-gray-100'; 
 
@@ -41,15 +42,15 @@ function createTable(data, itemsPerPage = 10) {
   `;
 
   // Calculate the number of pages needed
-  const totalPages = Math.ceil(data.length / itemsPerPage);
+  const totalPages = Math.ceil(blogData.length / itemsPerPage);
   let currentPage = 1;
 
   // Function to render the current page
   function renderPage(page) {
     const start = (page - 1) * itemsPerPage;
     const end = start + itemsPerPage;
-    const pageData = data.slice(start, end);
-    console.log('Data:', data);
+    const pageData = blogData.slice(start, end);
+    console.log('Data:', blogData);
 
 
     // Clear the current table body
@@ -62,6 +63,7 @@ function createTable(data, itemsPerPage = 10) {
     const newTbody = document.createElement('tbody');
     pageData.forEach(item => {
       const row = document.createElement('tr');
+      row.id = `blog-row-${item.id}`; // Assign an ID to the row
       row.innerHTML = `
         <td class="py-2 px-4 border-b border-b-gray-50">
           <div class="flex items-center">
@@ -135,7 +137,7 @@ function createTable(data, itemsPerPage = 10) {
 // Get Blog Collection Documents Data
 getDocs(blogRef).then(querySnapshot => {
   let i = 0;
-  let blogData = [];
+  blogData = [];
   querySnapshot.docs.forEach(doc => {
     let docData = doc.data();
     docData.id = doc.id; // Add the document ID as a property
@@ -157,7 +159,7 @@ getDocs(blogRef).then(querySnapshot => {
     });
   });
   // Append the table to your table container div
-  const { table, paginationContainer } = createTable(blogData);
+  const { table, paginationContainer } = createTable();
   const tableContainer = document.getElementById('table-container');
   tableContainer.appendChild(table);
   tableContainer.appendChild(paginationContainer);}).catch(error => {
@@ -180,7 +182,7 @@ const blogDataAdd = {
 
 const addNewBlog = async (blogDataAdd) => {
   try {
-    addDoc(blogRef, blogDataAdd);
+    //addDoc(blogRef, blogDataAdd);
     
     console.log("Blog post added.");
 
@@ -236,4 +238,28 @@ if (signin) {
 
 // signin button end
 
+
+async function deleteBlogPost(blogId) {
+  // Reference to the document to be deleted
+  const blogDocRef = doc(db, "blogs", blogId);
+
+  try {
+    // Delete the document
+    await deleteDoc(blogDocRef);
+    console.log(`Blog post with ID: ${blogId} has been deleted.`);
+
+    // Remove the corresponding table row
+    const row = document.getElementById(`blog-row-${blogId}`);
+    if (row) {
+      row.remove();
+    }
+    blogData = blogData.filter(blog => blog.id !== blogId);
+
+    // Hide the modal after deletion
+    hideDeleteModal();
+  } catch (error) {
+    console.error("Error deleting blog post:", error);
+  }
+}
+window.deleteBlogPost = deleteBlogPost;
 
