@@ -688,6 +688,10 @@ video {
   margin-top: 1rem;
 }
 
+.mt-5{
+  margin-top: 1.25rem;
+}
+
 .block{
   display: block;
 }
@@ -794,6 +798,10 @@ video {
 
 .max-w-\[140px\]{
   max-width: 140px;
+}
+
+.max-w-sm{
+  max-width: 24rem;
 }
 
 .max-w-xs{
