@@ -140,3 +140,14 @@ document.querySelectorAll('[data-tab]').forEach(function (item) {
 
 
 // end new blog post
+
+
+
+// Action button  animation start
+
+document.querySelector('.animate-button').addEventListener('click', function() {
+    document.querySelector('.additional-buttons').classList.toggle('active');
+  });
+  
+  
+  // Action button  animation end

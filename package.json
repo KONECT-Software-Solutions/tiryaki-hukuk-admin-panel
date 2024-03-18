@@ -11,7 +11,8 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "firebase": "^10.8.1"
+    "firebase": "^10.8.1",
+    "flowbite": "^2.3.0"
   },
   "devDependencies": {
     "tailwindcss": "^3.4.1",

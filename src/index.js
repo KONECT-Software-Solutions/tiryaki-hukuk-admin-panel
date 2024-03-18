@@ -3,17 +3,7 @@ import { initializeApp } from "firebase/app";
 import { getAnalytics } from "firebase/analytics";
 import { getAuth, signInWithEmailAndPassword } from "firebase/auth";
 import { getFirestore, collection, getDocs, addDoc } from "firebase/firestore";
-
-// Your web app's Firebase configuration
-const firebaseConfig = {
-  apiKey: "AIzaSyDvdTUs36DFXUIZ3S7EGZJlSeeDxXg1mGY",
-  authDomain: "tiryaki-hukuk-admin-pane-9a3f2.firebaseapp.com",
-  projectId: "tiryaki-hukuk-admin-pane-9a3f2",
-  storageBucket: "tiryaki-hukuk-admin-pane-9a3f2.appspot.com",
-  messagingSenderId: "432646173233",
-  appId: "1:432646173233:web:1c8a7ad94bacb703781b10",
-  measurementId: "G-0LMBJQ2524"
-};
+import { firebaseConfig } from "/src/config/FirebaseConfig.js";
 
 // Initialize Firebase
 const app = initializeApp(firebaseConfig);
@@ -34,13 +24,18 @@ function formatDate(timestamp) {
 // Function to create a table from the blog data with pagination
 function createTable(data, itemsPerPage = 10) {
   const table = document.createElement('table');
+  table.className = 'w-full bg-gray-100'; 
+
   table.innerHTML = `
     <thead>
       <tr>
-        <th class="text-[12px] uppercase tracking-wide font-medium text-gray-400 py-2 px-4 bg-gray-50 text-left rounded-tl-md rounded-bl-md">Blog Başlığı</th>
-        <th class="text-[12px] uppercase tracking-wide font-medium text-gray-400 py-2 px-4 bg-gray-50 text-left">Yazar</th>
-        <th class="text-[12px] uppercase tracking-wide font-medium text-gray-400 py-2 px-4 bg-gray-50 text-left">Yaratılma Tarihi</th>
-        <th class="text-[12px] uppercase tracking-wide font-medium text-gray-400 py-2 px-4 bg-gray-50 text-left">Aksiyonlar</th>
+        <th class="w-1/4 text-[12px] uppercase tracking-wide font-medium text-gray-600 py-2 px-4 bg-gray-50 text-left rounded-tl-md rounded-bl-md">Blog Başlığı</th>
+        <th class="w-1/4 text-[12px] uppercase tracking-wide font-medium text-gray-600 py-2 px-4 bg-gray-50 text-left">Yazar</th>
+        <th class="w-1/4 text-[12px] uppercase tracking-wide font-medium text-gray-600 py-2 px-4 bg-gray-50 text-left">Yaratılma Tarihi</th>
+        <th class="w-1/4 text-[12px] uppercase tracking-wide font-medium text-gray-600 py-2 px-4 bg-gray-50 text-left">Column</th>
+        <th class="w-1/4 text-[12px] uppercase tracking-wide font-medium text-gray-600 py-2 px-4 bg-gray-50 text-left">Column</th>
+        <th class="w-1/4 text-[12px] uppercase tracking-wide font-medium text-gray-600 py-2 px-4 bg-gray-50 text-left">Aksiyonlar</th>
+
       </tr>
     </thead>
   `;
@@ -68,23 +63,43 @@ function createTable(data, itemsPerPage = 10) {
       row.innerHTML = `
         <td class="py-2 px-4 border-b border-b-gray-50">
           <div class="flex items-center">
-              <img src="https://placehold.co/32x32" alt="" class="w-8 h-8 rounded object-cover block">
-              <a href="#" class="text-gray-600 text-sm font-medium hover:text-blue-500 ml-2 truncate">${item.title || ''}</a>
+              <a href="#" class="text-gray-600 text-sm font-medium hover:text-blue-500 truncate">${item.title || ''}</a>
           </div>
         </td>
         <td class="py-2 px-4 border-b border-b-gray-50">
-          <span class="text-[13px] font-medium text-gray-400">${item.author || ''}</span>
+          <span class="text-[13px] font-medium text-gray-600">${item.author || ''}</span>
         </td>
         <td class="py-2 px-4 border-b border-b-gray-50">
-          <span class="text-[13px] font-medium text-gray-400">$${formatDate(item.created_date)}</span>
+          <span class="text-[13px] font-medium text-gray-600">${formatDate(item.created_date)}</span>
         </td>
-        <td class="py-2 px-4 border-b border-b-gray-50">
-          <div class="flex space-x-5">
-              <button class="text-blue-500 hover:text-blue-600 ">Değiştir</button>
-              <button class="text-red-500 hover:text-red-600">Sil</button>
-              <button class="text-green-500 hover:text-green-600">Görüntüle</button>
-          </div>
-        </td>
+        
+      <td class="py-2 px-4 border-b border-b-gray-50">
+        <div class="flex space-x-5">
+          <span class="text-[13px] font-medium text-gray-600">Data</span>
+        </div>
+      </td>
+      <td class="py-2 px-4 border-b border-b-gray-50">
+      <div class="flex space-x-5">
+        <span class="text-[13px] font-medium text-gray-600">Data</span>
+      </div>
+    </td>
+    <td class="py-2 px-4 border-b border-b-gray-50 flex justify-between">
+    <div class="button-container relative">
+      <button class="text-sm bg-gray-700 hover:bg-gray-900 text-white font-bold py-2 px-4 rounded">
+        Değiştir
+      </button>
+      <button class="text-sm bg-gray-700 hover:bg-gray-900 text-white font-bold py-2 px-4 rounded">
+        Görüntüle
+      </button>
+      <button class="text-sm bg-gray-700 hover:bg-gray-900 text-white font-bold py-2 px-4 rounded">
+        Sil
+      </button>
+    </div>
+    
+  </td> 
+      
+      
+
       `;
       newTbody.appendChild(row);
     });
@@ -101,7 +116,7 @@ function createTable(data, itemsPerPage = 10) {
   for (let i = 1; i <= totalPages; i++) {
     const button = document.createElement('button');
     button.textContent = i;
-    button.className = 'pagination-button h-8 px-4 m-2 text-sm text-indigo-100 transition-colors duration-150 bg-indigo-500 rounded-lg focus:shadow-outline hover:bg-indigo-800'; // Add padding and styles
+    button.className = 'pagination-button h-8 px-4 m-2 text-sm text-white transition-colors duration-150 bg-gray-800 rounded-lg focus:shadow-outline hover:bg-indigo-800'; // Add padding and styles
     button.onclick = () => {
       currentPage = i;
       renderPage(currentPage);
