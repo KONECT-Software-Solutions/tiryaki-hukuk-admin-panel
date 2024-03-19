@@ -1,20 +1,24 @@
 // Import the functions you need from the SDKs you need
 import { initializeApp } from "firebase/app";
-import { getAnalytics } from "firebase/analytics";
+import { getAnalytics, logEvent} from "firebase/analytics";
 import { getAuth, signInWithEmailAndPassword } from "firebase/auth";
 import { getFirestore, collection, getDocs, addDoc, deleteDoc, doc} from "firebase/firestore";
 import { firebaseConfig } from "/src/config/FirebaseConfig.js";
+import { getBlogDataWithComments } from "/src/services/blogServices.js";
+
 
 // Initialize Firebase
 const app = initializeApp(firebaseConfig);
 const analytics = getAnalytics(app);
 const auth = getAuth(app);
 const db = getFirestore(app);
+
+getBlogDataWithComments(); // I added this function to test if I can sepetate the blog data services from the index.js file
+
 let blogData = [];
 
 // Collection Reference
 const blogRef = collection(db, "blogs");
-
 
 // Function to format the timestamp
 function formatDate(timestamp) {
@@ -50,7 +54,6 @@ function createTable(itemsPerPage = 10) {
     const start = (page - 1) * itemsPerPage;
     const end = start + itemsPerPage;
     const pageData = blogData.slice(start, end);
-    console.log('Data:', blogData);
 
 
     // Clear the current table body
@@ -170,22 +173,14 @@ getDocs(blogRef).then(querySnapshot => {
 
 // Collection Reference
 // Add new blog document with a subcollection function
-const blogDataAdd = {
-  title: "11111",
-  image: "image link here",
-  content: "This is a new blog post content.",
-  author: "ebrar karademir",
-  created_date: new Date(),
-  updated_date: new Date(),
-};
+
 
 
 const addNewBlog = async (blogDataAdd) => {
   try {
-    //addDoc(blogRef, blogDataAdd);
+  
+    addDoc(blogRef, blogDataAdd);
     
-    console.log("Blog post added.");
-
   } catch (error) {
     console.error("Error adding document:", error);
   }
@@ -196,7 +191,27 @@ const addNewBlog = async (blogDataAdd) => {
 const addNewBlogElement = document.getElementById('addNewBlog');
 
 if (addNewBlogElement) {
+  console.log('Add new blog button:', addNewBlogElement);
   addNewBlogElement.addEventListener('click', () => {
+    event.preventDefault();
+    const blogDataAdd = {
+      author: "admin",
+      created_date: new Date(),
+      updated_date: new Date(),
+
+      url: "https://konect-software-solutions.github.io/tiryaki-hukuk-web-project/blog-single.html"
+    };
+    // get data from input fields title, photo-upload, catgory, content
+    const title = document.getElementById('title').value;
+    //const photoUpload = document.getElementById('photo-upload').value;
+    const photoUpload = "img link here"
+    const category = document.getElementById('category').value;
+    const content = document.getElementById('content').value;
+    
+    blogDataAdd.title = title;
+    blogDataAdd.image = photoUpload;
+    blogDataAdd.content = content;
+    blogDataAdd.category = category;
     addNewBlog(blogDataAdd);
   }); 
 };
@@ -262,4 +277,6 @@ async function deleteBlogPost(blogId) {
   }
 }
 window.deleteBlogPost = deleteBlogPost;
+
+// log page view
 

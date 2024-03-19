@@ -11,41 +11,41 @@
 <body class="text-gray-800 font-inter">
     
     <!-- start: Sidebar -->
-    <div class="fixed left-0 top-0 w-52 h-full bg-gray-800 p-4 z-50 sidebar-menu transition-opacity ease-in-out delay-150 duration-300 transition-transform">
+    <div class="fixed left-0 top-0 w-56 h-full bg-gray-800 p-4 z-50 sidebar-menu transition-opacity ease-in-out delay-150 duration-300 transition-transform">
         <a href="#" class="flex items-center pb-4 border-b border-b-gray-800">
             <img src="https://flowbite.s3.amazonaws.com/blocks/marketing-ui/logo.svg" alt="" class="w-8 h-8 rounded object-cover">
             <span class="text-lg font-bold text-white ml-3">Admin Panel</span>
         </a>
         <ul class="mt-4">
             <li class="mb-1 group active">
-                <a href="#" class="flex items-center py-2 px-4 text-gray-300 hover:bg-gray-950 hover:text-gray-100 rounded-md group-[.active]:bg-gray-800 group-[.active]:text-white group-[.selected]:bg-gray-950 group-[.selected]:text-gray-100">
+                <a href="#" class="flex items-center py-2 px-4 text-gray-300 hover:bg-gray-950 hover:text-gray-100 rounded-md group-[.active]:bg-gray-950 group-[.active]:text-white">
                     <i class="ri-home-2-line mr-3 text-lg"></i>
-                    <span class="text-sm">Ana Sayfa</span>
+                    <span class="text-lg">Ana Sayfa</span>
                 </a>
             </li>
             <li class="mb-1 group">
-                <a href="#" class="flex items-center py-2 px-4 text-gray-300 hover:bg-gray-950 hover:text-gray-100 rounded-md group-[.active]:bg-gray-800 group-[.active]:text-white group-[.selected]:bg-gray-950 group-[.selected]:text-gray-100 sidebar-dropdown-toggle">
+                <a href="#" class="flex items-center py-2 px-4 text-gray-300 hover:bg-gray-950 hover:text-gray-100 rounded-md group-[.active]:bg-gray-950 group-[.active]:text-white">
                     <i class="ri-article-line mr-3 text-lg"></i>
-                    <span class="text-sm">Blog Yönetimi</span>
+                    <span class="text-lg">Blog Yönetimi</span>
                 </a>
             </li>
             <li class="mb-1 group">
-                <a href="#" class="flex items-center py-2 px-4 text-gray-300 hover:bg-gray-950 hover:text-gray-100 rounded-md group-[.active]:bg-gray-800 group-[.active]:text-white group-[.selected]:bg-gray-950 group-[.selected]:text-gray-100 sidebar-dropdown-toggle">
+                <a href="#" class="flex items-center py-2 px-4 text-gray-300 hover:bg-gray-950 hover:text-gray-100 rounded-md group-[.active]:bg-gray-800 group-[.active]:text-white">
                     <i class="ri-team-line mr-3 text-lg"></i>
-                    <span class="text-sm">Avukatlar</span>
+                    <span class="text-lg">Avukatlar</span>
                 </a>
                 
             </li>
             <li class="mb-1 group">
-                <a href="#" class="flex items-center py-2 px-4 text-gray-300 hover:bg-gray-950 hover:text-gray-100 rounded-md group-[.active]:bg-gray-800 group-[.active]:text-white group-[.selected]:bg-gray-950 group-[.selected]:text-gray-100">
+                <a href="#" class="flex items-center py-2 px-4 text-gray-300 hover:bg-gray-950 hover:text-gray-100 rounded-md group-[.active]:bg-gray-800 group-[.active]:text-white">
                     <i class="ri-settings-2-line mr-3 text-lg"></i>
-                    <span class="text-sm">Ayarlar</span>
+                    <span class="text-lg">Ayarlar</span>
                 </a>
             </li>
             <li class="mb-1 group">
-                <a href="login.html" class="flex items-center py-2 px-4 text-gray-300 hover:bg-gray-950 hover:text-gray-100 rounded-md group-[.active]:bg-gray-800 group-[.active]:text-white group-[.selected]:bg-gray-950 group-[.selected]:text-gray-100">
+                <a href="login.html" class="flex items-center py-2 px-4 text-gray-300 hover:bg-gray-950 hover:text-gray-100 rounded-md group-[.active]:bg-gray-800 group-[.active]:text-white">
                     <i class="ri-logout-box-line mr-3 text-lg"></i>
-                    <span class="text-sm">Çıkış</span>
+                    <span class="text-lg">Çıkış</span>
                 </a>
             </li>
          
@@ -55,14 +55,14 @@
     <!-- end: Sidebar -->
 
     <!-- start: Main -->
-    <main class="md:w-[calc(100%-220px)] md:ml-52 bg-gray-50 min-h-screen transition-all main">
+    <main class="md:w-[calc(100%-220px)] md:ml-56 bg-gray-50 min-h-screen transition-all main">
         <div class="py-2 px-6 bg-white flex items-center shadow-md shadow-black/5 sticky top-0 left-0 z-30">
             <button type="button" class="text-lg text-gray-600 sidebar-toggle">
                 <i class="ri-menu-line"></i>
             </button>
             <ul class="flex items-center text-sm ml-4">
                 <li class="mr-2">
-                    <a href="#" class="text-gray-500 hover:text-gray-800 font-medium">Ana Sayfa</a>
+                    <a href="#" class="text-gray-500 hover:text-gray-800 font-medium ">Ana Sayfa</a>
                 </li>
             </ul>
             <ul class="ml-auto flex items-center">
@@ -261,7 +261,7 @@
                 <div class="bg-gray-200 border border-gray-300 shadow-md shadow-black/5 p-6 rounded-md mt-5">
                     <div class="flex justify-between mb-4 items-start">
                         <div class="font-medium">Blog Yönetimi</div>
-                        <button id="addNewBlog" data-modal-target="crud-modal" data-modal-toggle="crud-modal" class="bg-green-700 text-white px-4 py-1 font-medium rounded">+ Ekle</button>
+                        <button data-modal-target="crud-modal" data-modal-toggle="crud-modal" class="bg-green-700 text-white px-4 py-1 font-medium rounded">+ Ekle</button>
                         <!-- Main modal -->
                         <div id="crud-modal" tabindex="-1" aria-hidden="true" class="hidden overflow-y-auto overflow-x-hidden fixed top-0 right-0 left-0 z-50 justify-center items-center w-full md:inset-0 h-[calc(100%-1rem)] max-h-full">
                             <div class="relative ml-36 p-4 w-full max-w-4xl max-h-full">
@@ -283,8 +283,8 @@
                                     <form class="p-4 md:p-5">
                                         <div class="grid gap-4 mb-4 grid-cols-2">
                                             <div class="col-span-2">
-                                                <label for="name" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white"></label>
-                                                <input type="text" name="name" id="name" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500" placeholder="Blog yazısı başlığını girin" required="">
+                                                <label for="title" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white"></label>
+                                                <input type="text" name="title" id="title" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500" placeholder="Blog yazısı başlığını girin" required="">
                                             </div>
                                             <div class="col-span-2 sm:col-span-1">
                                                 <label for="photo-upload" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Fotoğraf Seç</label>
@@ -303,12 +303,12 @@
                                                 </select>
                                             </div>
                                             <div class="col-span-2">
-                                                <label for="description" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Yazı İçeriği</label>
-                                                <textarea id="description" rows="4" class="block p-2.5 w-full h-96 text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="Ana içeriğinizi buraya yazınız."></textarea>                    
+                                                <label for="content" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Yazı İçeriği</label>
+                                                <textarea id="content" rows="4" class="block p-2.5 w-full h-96 text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="Ana içeriğinizi buraya yazınız."></textarea>                    
                                             </div>
                                         </div>
-                                        <button type="submit" class="text-white inline-flex items-center bg-green-700 hover:bg-green-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
-                                            <svg class="me-1 -ms-1 w-5 h-5" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M10 5a1 1 0 011 1v3h3a1 1 0 110 2h-3v3a1 1 0 11-2 0v-3H6a1 1 0 110-2h3V6a1 1 0 011-1z" clip-rule="evenodd"></path></svg>
+                                        <button type="submit" id="addNewBlog" class="text-white inline-flex items-center bg-green-700 hover:bg-green-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800" data-modal-toggle="crud-modal">
+                                            <svg class="me-1 sr-only -ms-1 w-5 h-5" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M10 5a1 1 0 011 1v3h3a1 1 0 110 2h-3v3a1 1 0 11-2 0v-3H6a1 1 0 110-2h3V6a1 1 0 011-1z" clip-rule="evenodd"></path></svg>
                                             Ekle
                                         </button>
                                     </form>
