@@ -180,6 +180,7 @@ const addNewBlog = async (blogDataAdd) => {
   try {
   
     addDoc(blogRef, blogDataAdd);
+    console.log("Blog post added successfully!")
     
   } catch (error) {
     console.error("Error adding document:", error);
@@ -191,7 +192,6 @@ const addNewBlog = async (blogDataAdd) => {
 const addNewBlogElement = document.getElementById('addNewBlog');
 
 if (addNewBlogElement) {
-  console.log('Add new blog button:', addNewBlogElement);
   addNewBlogElement.addEventListener('click', () => {
     event.preventDefault();
     const blogDataAdd = {
