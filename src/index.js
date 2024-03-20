@@ -15,11 +15,6 @@ const db = getFirestore(app);
 
 getBlogDataWithComments(); // I added this function to test if I can sepetate the blog data services from the index.js file
 
-let blogData = [];
-
-// Collection Reference
-const blogRef = collection(db, "blogs");
-
 // Function to format the timestamp
 function formatDate(timestamp) {
   const date = new Date(timestamp.seconds * 1000);
@@ -137,6 +132,11 @@ function createTable(itemsPerPage = 10) {
 
 }
 
+
+let blogData = [];
+
+// Collection Reference
+const blogRef = collection(db, "blogs");
 // Get Blog Collection Documents Data
 getDocs(blogRef).then(querySnapshot => {
   let i = 0;
@@ -169,90 +169,78 @@ getDocs(blogRef).then(querySnapshot => {
   console.error("Error getting blogs:", error);
 });
 
+// Event listener for the 'Add new blog post' button
+const addNewBlogElement = document.getElementById('addNewBlog');
+if (addNewBlogElement) {
+  addNewBlogElement.addEventListener('click', handleAddNewBlogPost);
+}
+// Function to handle the addition of a new blog post
+async function handleAddNewBlogPost(event){
+  event.preventDefault(); // Ensure form submission is handled correctly
 
+  // Attempt to retrieve and validate DOM elements before proceeding
+  const titleElement = document.getElementById('title');
+  const categoryElement = document.getElementById('category');
+  const contentElement = document.getElementById('content');
 
-// Collection Reference
-// Add new blog document with a subcollection function
+ // Check if elements exist and if their values are empty
+  if (!titleElement.value.trim() || !categoryElement.value.trim() || !contentElement.value.trim()) {
+    console.error('One or more input fields are empty.');
+  return;
+  }
+  // Building the blog post object with values from input fields
+  const blogDataAdd = {
+    author: "admin",
+    created_date: new Date(),
+    updated_date: new Date(),
+    url: "https://konect-software-solutions.github.io/tiryaki-hukuk-web-project/blog-single.html",
+    title: titleElement.value,
+    image: "img link here", // Replace with dynamic data if necessary
+    category: categoryElement.value,
+    content: contentElement.value,
+  };
 
-
-
-const addNewBlog = async (blogDataAdd) => {
+  // Calling the function to add the new blog post
   try {
-  
-    addDoc(blogRef, blogDataAdd);
-    console.log("Blog post added successfully!")
-    
+    await addDoc(blogRef, blogDataAdd); // Ensure addDoc is awaited
+    console.log("Blog post added successfully!");
   } catch (error) {
     console.error("Error adding document:", error);
   }
 };
+// Sign-in button start
 
-// Add new blog post button start
-
-const addNewBlogElement = document.getElementById('addNewBlog');
-
-if (addNewBlogElement) {
-  addNewBlogElement.addEventListener('click', () => {
-    event.preventDefault();
-    const blogDataAdd = {
-      author: "admin",
-      created_date: new Date(),
-      updated_date: new Date(),
-
-      url: "https://konect-software-solutions.github.io/tiryaki-hukuk-web-project/blog-single.html"
-    };
-    // get data from input fields title, photo-upload, catgory, content
-    const title = document.getElementById('title').value;
-    //const photoUpload = document.getElementById('photo-upload').value;
-    const photoUpload = "img link here"
-    const category = document.getElementById('category').value;
-    const content = document.getElementById('content').value;
-    
-    blogDataAdd.title = title;
-    blogDataAdd.image = photoUpload;
-    blogDataAdd.content = content;
-    blogDataAdd.category = category;
-    addNewBlog(blogDataAdd);
-  }); 
-};
-
-// Add new blog post button end
-
-// signin button start
-const signin = document.getElementById('signin');
-
-// if signin button clicked
-if (signin) {
-  signin.addEventListener('click', () => {
-    const userEmail = document.getElementById('email').value;
-    const userPassword = document.getElementById('password').value;
-    const rememberUser = document.getElementById('remember').checked;
-  
-    console.log('User email:', userEmail);
-    console.log('User password:', userPassword);
-    console.log('Remember user:', rememberUser);
-  
-    signInWithEmailAndPassword(auth, userEmail, userPassword)
-      .then((userCredential) => {
-        // Signed in
-        const user = userCredential.user;
-        console.log('User signed in:', user);
-        if (rememberUser) {
-          // Remember user logic here
-        }
-        // Redirect to index.html page
-        window.location.href = 'index.html';
-      })
-      .catch((error) => {
-        const errorCode = error.code;
-        const errorMessage = error.message;
-        console.error('Sign in error:', errorCode, errorMessage);
-      });
-  });
+const signinButton = document.getElementById('signin');
+// Add click event listener to sign-in button
+if (signinButton) {
+  signinButton.addEventListener('click', signInUser);
 }
+// Sign-in function
+async function signInUser() {
+  const userEmail = document.getElementById('email').value;
+  const userPassword = document.getElementById('password').value;
+  const rememberUser = document.getElementById('remember').checked;
 
-// signin button end
+  console.log('User email:', userEmail);
+  console.log('User password:', userPassword);
+  console.log('Remember user:', rememberUser);
 
+  try {
+    const userCredential = await signInWithEmailAndPassword(auth, userEmail, userPassword);
+    const user = userCredential.user;
+    console.log('User signed in:', user);
+
+    if (rememberUser) {
+      // Remember user logic here
+    }
+
+    // Redirect to index.html page
+    window.location.href = 'index.html';
+  } catch (error) {
+    console.error('Sign in error:', error.code, error.message);
+  }
+}
+// Sign-in button end
 
 async function deleteBlogPost(blogId) {
   // Reference to the document to be deleted
@@ -276,7 +264,7 @@ async function deleteBlogPost(blogId) {
     console.error("Error deleting blog post:", error);
   }
 }
-window.deleteBlogPost = deleteBlogPost;
-
-// log page view
+/* function added to the global scope because 
+the show delete modal function in script.js uses it */
+window.deleteBlogPost = deleteBlogPost; 
 
