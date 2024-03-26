@@ -1,10 +1,12 @@
 // Import the functions you need from the SDKs you need
 import { collection, getDocs, addDoc, deleteDoc, doc} from "firebase/firestore";
 import { db } from "/src/config/firebase-init.js";
+import { BlogsTable } from "/src/components/BlogsTable";
 
 
 const blogRef = collection(db, "blogs");
 let blogData = [];
+export const blogsTable = new BlogsTable([], 8);
 
 export async function getAllBlogs() {
     try {
@@ -58,31 +60,26 @@ export async function addNewBlogPost(event){
     // Calling the function to add the new blog post
     try {
       await addDoc(blogRef, blogDataAdd); // Ensure addDoc is awaited
-      console.log("Blog post added successfully!");
+      blogsTable.addBlogPost(blogDataAdd); // Add the new blog post to the table
     } catch (error) {
       console.error("Error adding document:", error);
     }
-  };
-  // Sign-in button start
+};
 
+export function viewBlogPost(blogId) {
+    // Redirect to the blog post page
+    window.location.href = `/blog-single.html?id=${blogId}`;
+}
 
 async function deleteBlogPost(blogId) {
+  event.preventDefault(); // Ensure form submission is handled correctly
   // Reference to the document to be deleted
   const blogDocRef = doc(db, "blogs", blogId);
 
   try {
     // Delete the document
     await deleteDoc(blogDocRef);
-    console.log(`Blog post with ID: ${blogId} has been deleted.`);
-
-    // Remove the corresponding table row
-    const row = document.getElementById(`blog-row-${blogId}`);
-    if (row) {
-      console.log("Row found and removed:", row);
-      row.remove();
-    }
-    blogData = blogData.filter(blog => blog.id !== blogId);
-
+    blogsTable.deleteBlogPost(blogId); // Remove the blog post from the table
     // Hide the modal after deletion
     hideDeleteModal();
   } catch (error) {

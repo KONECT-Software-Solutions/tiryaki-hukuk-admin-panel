@@ -76,8 +76,8 @@ class BlogsTable {
     <button class="text-sm bg-gray-700 hover:bg-gray-900 text-white font-bold py-2 px-4 rounded">
       Değiştir
     </button>
-    <button class="text-sm bg-gray-700 hover:bg-gray-900 text-white font-bold py-2 px-4 rounded">
-      Görüntüle
+    <button class="text-sm bg-gray-700 hover:bg-gray-900 text-white font-bold py-2 px-4 rounded" onclick="window.location.href='${item.url}';">
+    Görüntüle
     </button>
     <button class="text-sm bg-gray-700 hover:bg-gray-900 text-white font-bold py-2 px-4 rounded" onclick="showDeleteModal('${item.id}')">
     Sil
@@ -111,7 +111,14 @@ class BlogsTable {
     }
 
     addBlogPost(blogPost) {
+      console.log('Blog post added:', blogPost);
       this.blogData.push(blogPost);
+      this.renderTable();
+    }
+
+    deleteBlogPost(blogId) {
+      console.log('Blog post deleted:', blogId);
+      this.blogData = this.blogData.filter(blog => blog.id !== blogId);
       this.renderTable();
     }
   }
