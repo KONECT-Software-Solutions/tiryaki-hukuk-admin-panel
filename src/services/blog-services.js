@@ -6,10 +6,10 @@ import { db } from "/src/config/firebase-init.js";
 const blogRef = collection(db, "blogs");
 let blogData = [];
 
-export async function getBlogDataWithComments() {
+export async function getAllBlogs() {
     try {
         const querySnapshot = await getDocs(blogRef);
-        for (const doc of querySnapshot.docs) {
+        for (const doc of querySnapshot.docs) { // önceden for each kullanıyordum blog servisini ayrı dosyaya alınca fetch etmesi yavaşladı 
             let docData = doc.data();
             docData.id = doc.id; // Add the document ID as a property
             // Reference to the 'comments' subcollection of the current blog document
@@ -23,7 +23,6 @@ export async function getBlogDataWithComments() {
             docData.comments = commentData; // Add comments to the blog data
             blogData.push(docData);
         }
-        console.log("Blog data with comments:", blogData);
         return blogData;
     } catch (error) {
         console.error("Error getting blogs with comments:", error);
@@ -31,7 +30,7 @@ export async function getBlogDataWithComments() {
     }
 }
 
-export async function AddNewBlogPost(event){
+export async function addNewBlogPost(event){
     event.preventDefault(); // Ensure form submission is handled correctly
   
     // Attempt to retrieve and validate DOM elements before proceeding
@@ -79,6 +78,7 @@ async function deleteBlogPost(blogId) {
     // Remove the corresponding table row
     const row = document.getElementById(`blog-row-${blogId}`);
     if (row) {
+      console.log("Row found and removed:", row);
       row.remove();
     }
     blogData = blogData.filter(blog => blog.id !== blogId);
