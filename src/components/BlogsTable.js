@@ -46,6 +46,7 @@ class BlogsTable {
   
       const tbody = document.createElement('tbody');
       pageData.forEach(item => {
+        const stringBlogData = encodeURIComponent(JSON.stringify(item)); // Encode the JSON string
         const row = document.createElement('tr');
         row.id = `blog-row-${item.id}`; // Assign an ID to the row
         row.innerHTML = `
@@ -73,7 +74,7 @@ class BlogsTable {
   </td>
   <td class="py-2 px-4 border-b border-b-gray-50 flex justify-between">
   <div class="button-container relative">
-    <button class="text-sm bg-gray-700 hover:bg-gray-900 text-white font-bold py-2 px-4 rounded">
+    <button class="text-sm bg-gray-700 hover:bg-gray-900 text-white font-bold py-2 px-4 rounded" onclick="showEditModal('${stringBlogData}')">
       Değiştir
     </button>
     <button class="text-sm bg-gray-700 hover:bg-gray-900 text-white font-bold py-2 px-4 rounded" onclick="window.location.href='${item.url}';">

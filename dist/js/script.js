@@ -154,5 +154,18 @@ function hideDeleteModal() {
     document.getElementById('deleteModal').classList.add('hidden');
   }
   
+function showEditModal(stringBlogData) {
+    const blogData = JSON.parse(decodeURIComponent(stringBlogData));
+    console.log(blogData.category);
+    document.getElementById('editModalTitle').value = blogData.title;
+    document.getElementById('editModalCategory').value = blogData.category;
+    document.getElementById('editModalContent').value = blogData.content;
 
-  // delete blog post end
+    document.getElementById('editModal').classList.remove('hidden');
+    document.getElementById('saveEdit').addEventListener('click', () => editBlogPost(blogData));
+    document.getElementById('cancelEdit').addEventListener('click', hideEditModal);
+  }
+function hideEditModal() {
+    document.getElementById('editModal').classList.add('hidden');
+  }
+

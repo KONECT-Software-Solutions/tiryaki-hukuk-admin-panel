@@ -72,7 +72,6 @@ export function viewBlogPost(blogId) {
 }
 
 async function deleteBlogPost(blogId) {
-  event.preventDefault(); // Ensure form submission is handled correctly
   // Reference to the document to be deleted
   const blogDocRef = doc(db, "blogs", blogId);
 
@@ -86,7 +85,12 @@ async function deleteBlogPost(blogId) {
     console.error("Error deleting blog post:", error);
   }
 }
+
+function editBlogPost(blogData){
+  console.log(blogData);
+}
 /* function added to the global scope because 
 the show delete modal function in script.js uses it */
 window.deleteBlogPost = deleteBlogPost; 
+window.editBlogPost = editBlogPost;
 
